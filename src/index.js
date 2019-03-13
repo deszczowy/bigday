@@ -7,7 +7,34 @@ import 'react-tabs/style/react-tabs.css'
 import './primitive.css'
 import './index.css';
 
-class App extends React.Component{
+/* pdf - pdfmake - http://pdfmake.org - npm install pdfmake 
+*/
+
+class BigDay extends React.Component{
+    constructor(){
+        super();
+
+        this.state = {
+            items: [
+                {id: 1, description: 'white dress', price: 200},
+                {id: 2, description: 'restaurant', price: 15000},
+                {id: 3, description: 'flowers', price: 50},
+            ],
+        }
+    }
+
+    updateBudgetItems = (itemName, itemPrice) => {
+        var newId = this.state.items.length +1;
+        if (itemName){
+            const updatedItems = [...this.state.items, {id: newId, description: itemName, price: itemPrice}];
+    
+            this.setState(
+                {items: updatedItems}
+            );
+        }
+
+    }
+
     render(){
         return (
         <Tabs className="pages">
@@ -20,7 +47,7 @@ class App extends React.Component{
                 <GuestList />
             </TabPanel>
             <TabPanel className="panel">
-                <Budget />
+                <Budget entries={this.state.items} updateBudget={this.updateBudgetItems}/>
             </TabPanel>
         </Tabs>
         );
@@ -28,16 +55,10 @@ class App extends React.Component{
 }
 
 class Budget extends React.Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
 
         this.state = {
-            positions: [
-                {id: 1, description: 'white dress', price: 200},
-                {id: 2, description: 'restaurant', price: 15000},
-                {id: 3, description: 'flowers', price: 50},
-            ],
-
             newItemName: '',
             newItemPrice: 0.0
         }
@@ -70,24 +91,22 @@ class Budget extends React.Component{
     }
 
     addItem = (e) => {
-        const {positions, newItemName, newItemPrice} = this.state;
-        var newId = positions.length +1;
-
-        console.log('sss');
+        const {newItemName, newItemPrice} = this.state;
+        
+        console.log('dddd');
         console.log(newItemName);
         console.log(newItemPrice);
-        console.log('ssc');
+        console.log('eeee');
 
         if (newItemName){
-        const updatedPositions = [...positions, {id: newId, description: newItemName, price: newItemPrice}];
-
-        this.setState(
-            {
-                positions: updatedPositions,
-                newItemName: '',
-                newItemPrice: 0.0
-            }
-        );
+        
+            this.props.updateBudget(newItemName, newItemPrice);
+            this.setState(
+                {
+                    newItemName: '',
+                    newItemPrice: 0.0
+                }
+            );
         }
     }
 
@@ -97,27 +116,27 @@ class Budget extends React.Component{
             contentEditable
             suppressContentEditableWarning
             onBlur={e => {
-              const positions = [...this.state.positions];
+              const positions = [...this.props.entries];
               
               positions[cellInfo.index][cellInfo.column.id] = isNaN(e.target.innerHTML) ? 0 : parseInt(e.target.innerHTML);
 
-              this.setState({ positions });
+              this.props.updateBudget(positions);
             }}
             dangerouslySetInnerHTML={{
-              __html: this.state.positions[cellInfo.index][cellInfo.column.id]
+              __html: this.props.entries[cellInfo.index][cellInfo.column.id]
             }}
           />
         );
       }
 
     render(){
-        const { positions, newItemName, newItemPrice } = this.state;
+        const { newItemName, newItemPrice } = this.state;
         const TheadComponent = props => null; // null to hide headers
 
-        var sum = this.sumUp(positions);
+        var sum = this.sumUp(this.props.entries);
         const items = [{label: 'Sum', amount: sum}];
 
-        console.log(positions);
+        console.log(this.props.entries);
         console.log(sum);
         console.log(items);
 
@@ -134,7 +153,7 @@ class Budget extends React.Component{
                 </div>
 
                 <ReactTable
-                data={positions}
+                data={this.props.entries}
                 columns={[
                     {
                     Header: "Element",
@@ -269,6 +288,6 @@ class GuestList extends React.Component {
 
 
 ReactDOM.render(
-    <App />, 
+    <BigDay />, 
     document.getElementById('root')
 )
