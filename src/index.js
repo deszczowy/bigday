@@ -4,6 +4,7 @@ import ReactTable from "react-table";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-table/react-table.css";
 import 'react-tabs/style/react-tabs.css'
+import './primitive.css'
 import './index.css';
 
 class App extends React.Component{
