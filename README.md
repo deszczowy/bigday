@@ -1,2 +1,5 @@
 # bigday
-No license yet. Did not decide.
+
+My little ReactJS learning playground.
+
+No license yet.
