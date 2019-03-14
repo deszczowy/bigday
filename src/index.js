@@ -20,12 +20,7 @@ class BigDay extends React.Component{
 
         this.state = {
             guests: [],
-
-            items: [
-                {id: 1, description: 'white dress', price: 200},
-                {id: 2, description: 'restaurant', price: 15000},
-                {id: 3, description: 'flowers', price: 50},
-            ],
+            items: [],
         }
     }
 

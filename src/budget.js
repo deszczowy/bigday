@@ -120,6 +120,7 @@ export default class Budget extends React.Component{
                 sortable={false}
                 minRows={0}
                 resizable={false}
+                noDataText="No items found."
                 />
 
                 <ReactTable
