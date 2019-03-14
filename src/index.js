@@ -116,6 +116,12 @@ class FileInput extends React.Component {
 
     loadFile = (e) => {
 
+        try {
+            var data = JSON.parse(e.target.result);
+            console.log(data);
+        } catch {
+            console.log("Not on my watch");
+        }
         this.setState(
             {content: e.target.result}
         );
