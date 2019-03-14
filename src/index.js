@@ -47,6 +47,35 @@ class BigDay extends React.Component{
         }
     }
 
+    printGuestList = () => {
+        var hers = [];
+        var his = [];
+
+        var i = 0;
+        for (i = 0; i < this.state.guests.length; i++){
+            if (this.state.guests[i].side === 0) {
+                hers.push(this.state.guests[i].name);
+            } else {
+                his.push(this.state.guests[i].name);
+            }
+        }
+
+        var createPdf = require('pdfmake-browserified');
+        var dd = { 
+            content: [
+                'Guests of Her side:',
+                {
+                    ol: hers
+                },
+                'Guests of His side:',
+                {
+                    ol: his
+                }
+            ]
+        };
+        createPdf(dd).open();
+    }
+
     render(){
         return (
         <Tabs className="pages">
@@ -58,6 +87,7 @@ class BigDay extends React.Component{
 
             <TabPanel className="panel">
                 <GuestList list={this.state.guests} updateList={this.updateGuestsList}/>
+                <button onClick={this.printGuestList}>Print</button>
             </TabPanel>
             <TabPanel className="panel">
                 <Budget entries={this.state.items} updateBudget={this.updateBudgetItems}/>
