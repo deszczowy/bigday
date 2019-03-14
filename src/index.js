@@ -83,6 +83,7 @@ class BigDay extends React.Component{
             <TabList className="tabs"> 
                 <Tab className="tab">Guest list</Tab>
                 <Tab className="tab">Budget</Tab>
+                <Tab className="tab">Upload</Tab>
             </TabList>
 
             <TabPanel className="panel">
@@ -92,6 +93,9 @@ class BigDay extends React.Component{
             <TabPanel className="panel">
                 <Budget entries={this.state.items} updateBudget={this.updateBudgetItems}/>
             </TabPanel>
+            <TabPanel className="panel">
+                <FileInput/>
+            </TabPanel>
         </Tabs>
         );
     } 
@@ -99,7 +103,49 @@ class BigDay extends React.Component{
 
 
 
+class FileInput extends React.Component {
+    constructor(props) {
+      super(props);
+      this.handleSubmit = this.handleSubmit.bind(this);
+      this.fileInput = React.createRef();
 
+      this.state = {
+          content: ""
+      };
+    }
+
+    loadFile = (e) => {
+
+        this.setState(
+            {content: e.target.result}
+        );
+    }
+
+    handleSubmit(event) {
+      event.preventDefault();
+
+      var file = this.fileInput.current.files[0];
+
+      var reader = new FileReader();
+      reader.onload = this.loadFile;
+      reader.readAsText(file);
+    }
+  
+    render() {
+        const {content} = this.state;
+
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Upload file:
+            <input type="file" ref={this.fileInput} />
+          </label>
+          <br />{content}
+          <button type="submit">Submit</button>
+        </form>
+      );
+    }
+  }
 
 
 
