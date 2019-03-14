@@ -20,7 +20,6 @@ width: 50%;
 .pages{
   width: 100%;
   height: 100%;
-  bor/der: 1px dotted #000;
 }
 
 .tabs{
@@ -35,7 +34,6 @@ width: 50%;
 
 .tab{
   display: inline-block;
-  bo/rder: 1px solid red;
   padding: 20px;
   font-size: 2em;
   cursor: pointer;
