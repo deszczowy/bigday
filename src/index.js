@@ -19,6 +19,8 @@ class BigDay extends React.Component{
         super();
 
         this.state = {
+            guests: [],
+
             items: [
                 {id: 1, description: 'white dress', price: 200},
                 {id: 2, description: 'restaurant', price: 15000},
@@ -40,16 +42,27 @@ class BigDay extends React.Component{
 
     }
 
+    updateGuestsList = (guestName, guestSide) => {
+        if (guestName){
+            const updatedGuests = [...this.state.guests, {name: guestName, side: guestSide}];
+
+            this.setState(
+                {guests: updatedGuests}
+            );
+        }
+    }
+
     render(){
         return (
         <Tabs className="pages">
+        
             <TabList className="tabs"> 
                 <Tab className="tab">Guest list</Tab>
                 <Tab className="tab">Budget</Tab>
             </TabList>
 
             <TabPanel className="panel">
-                <GuestList />
+                <GuestList list={this.state.guests} updateList={this.updateGuestsList}/>
             </TabPanel>
             <TabPanel className="panel">
                 <Budget entries={this.state.items} updateBudget={this.updateBudgetItems}/>

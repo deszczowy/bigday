@@ -5,32 +5,31 @@ export default class GuestList extends React.Component {
         super(props);
 
         this.state = {
-            guests: [],
             guestName: "",
             guestSide: 0
         }
     }
 
     onChange = (e) => {
-        console.log(e.target.dataset.id + '-' + e.target.name + '_' + e.target.className + '. = ' + e.target.value);
         this.setState(
             {[e.target.name]: e.target.value}
         )
     }
 
     onFormSubmit = (e) => {
-        const {guestName} = this.state;
+        const {guestName, guestSide} = this.state;
         if (guestName) {
-            this.setState((prevState) => ({
-                guests: [...prevState.guests, {name: prevState.guestName, side: prevState.guestSide}],
+            this.props.updateList(guestName, guestSide);
+
+            this.setState({            
                 guestSide: 0,
                 guestName: ""
-            }));
+            });
         }
     }
 
     render(){
-        const { guests, guestName, guestSide } = this.state;
+        const { guestName, guestSide } = this.state;
 
         return (
             <div className="narrow">
@@ -60,7 +59,7 @@ export default class GuestList extends React.Component {
                         </thead>
                         <tbody>
                         {
-                            guests.map(
+                            this.props.list.map(
                                 (guest, index) => <tr key={index}><td> {guest.name} </td><td> {guest.side === "1" ? 'His' : 'Her'} </td></tr>
                             )
                         }
