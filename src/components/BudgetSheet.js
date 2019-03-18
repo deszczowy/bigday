@@ -3,60 +3,21 @@ import ReactTable from "react-table";
 
 import "react-table/react-table.css";
 
-export default class Budget extends React.Component{
+export default class BudgetSheet extends React.Component{
     constructor(props){
         super(props);
-
-        this.state = {
-            newItemName: '',
-            newItemPrice: 0.0
-        }
-
         this.renderEditable = this.renderEditable.bind(this);
-    }
-
-    changeField = (e) =>{
-        //console.log(e.target.dataset.id + '-' + e.target.name + '_' + e.target.className + '. = ' + e.target.value);
-        switch (e.target.name){
-            case 'newItemName':
-                this.setState({newItemName: e.target.value})
-                break;
-            case 'newItemPrice':
-                this.setState({newItemPrice: Number(e.target.value)})
-                break;
-            default:
-                break;
-        }
-        
     }
 
     sumUp(items){
         var sum = 0.0;
+        if (items){
         for(var i = 0; i < items.length; i++)
         {
             sum += items[i].price;
         }
-        return sum;
     }
-
-    addItem = (e) => {
-        const {newItemName, newItemPrice} = this.state;
-        
-        console.log('dddd');
-        console.log(newItemName);
-        console.log(newItemPrice);
-        console.log('eeee');
-
-        if (newItemName){
-        
-            this.props.updateBudget(newItemName, newItemPrice);
-            this.setState(
-                {
-                    newItemName: '',
-                    newItemPrice: 0.0
-                }
-            );
-        }
+        return sum;
     }
 
     renderEditable(cellInfo) {
@@ -79,28 +40,14 @@ export default class Budget extends React.Component{
       }
 
     render(){
-        const { newItemName, newItemPrice } = this.state;
+        
         const TheadComponent = props => null; // null to hide headers
 
         var sum = this.sumUp(this.props.entries);
         const items = [{label: 'Sum', amount: sum}];
 
-        console.log(this.props.entries);
-        console.log(sum);
-        console.log(items);
-
         return (
-            <div className="narrow">
-                <div className="addItem">
-                    <label>New item:
-                    <input type="text" name="newItemName" value={newItemName} onChange={this.changeField}/>
-                    </label>
-                    <label>Price:
-                    <input type="number" name="newItemPrice" value={newItemPrice} onChange={this.changeField}/>
-                    </label>
-                    <button onClick={this.addItem}>Add</button>
-                </div>
-
+            <div>
                 <ReactTable
                 data={this.props.entries}
                 columns={[
